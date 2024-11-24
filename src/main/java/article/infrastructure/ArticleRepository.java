@@ -2,7 +2,7 @@ package article.infrastructure;
 
 import article.domain.Article;
 
-import article.domain.co.ArticleContent;
+import article.domain.dto.ArticleContent;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -27,4 +27,6 @@ public interface ArticleRepository extends IService<Article> {
     void removeUserArticle(long articleId);
 
     void updateArticleContent(ArticleContent articleContent);
+
+    ArticleContent getArticleContent(long id);
 }

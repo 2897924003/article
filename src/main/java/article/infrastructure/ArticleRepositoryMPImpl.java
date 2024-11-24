@@ -1,7 +1,7 @@
 package article.infrastructure;
 
 import article.domain.Article;
-import article.domain.co.ArticleContent;
+import article.domain.dto.ArticleContent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -52,6 +52,11 @@ public class ArticleRepositoryMPImpl extends ServiceImpl<ArticleMapper, Article>
     @Override
     public void updateArticleContent(ArticleContent articleContent) {
         baseMapper.updateArticleContent(articleContent);
+    }
+
+    @Override
+    public ArticleContent getArticleContent(long id) {
+        return baseMapper.getArticleContent(id);
     }
 
 

@@ -6,11 +6,62 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 
+import java.beans.JavaBean;
 import java.time.LocalDateTime;
 
 @TableName("article_meta")
+
 public class Article {
 
+    /**
+     * 文章唯一ID，自增主键
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+    private Long authorId;
+    private String authorImg;
+    private String authorName;
+    /**
+     * 文章标题
+     */
+    private String title;
+    /**
+     * 文章封面图的URL
+     */
+    private String img;
+    /**
+     * 文章摘要
+     */
+    private String summary;
+    /**
+     * 文章链接
+     */
+    private String link;
+    /**
+     * 文章评分
+     */
+    private Long score;
+    /**
+     * 文章浏览次数
+     */
+    private Long views;
+    /**
+     * 文章点赞数
+     */
+    private Long votes;
+    /**
+     * 文章发布时间
+     */
+    private LocalDateTime publishDate;
+    /**
+     * 文章编辑时间，表示最后一次编辑时间
+     */
+    private LocalDateTime editDate;
+    /**
+     * 发布状态，true表示已发布，false表示未发布
+     */
+    @TableField("is_published")
+    private Boolean isPublished;
     public Article() {
     }
 
@@ -48,70 +99,23 @@ public class Article {
     }
 
     /**
-     * 文章唯一ID，自增主键
+     * 更新浏览量
+     * @param delta Δ
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
-    private Long authorId;
-
-    private String authorImg;
-
-    private String authorName;
-
+    public void updateViews(Long delta){
+        if (delta==null){return;}
+        views+=delta;
+    }
     /**
-     * 文章标题
+     * 更新点赞量
+     * @param delta Δ
      */
-    private String title;
-
-
-    /**
-     * 文章封面图的URL
-     */
-    private String img;
-
-    /**
-     * 文章摘要
-     */
-    private String summary;
-
-    /**
-     * 文章链接
-     */
-    private String link;
-
-    /**
-     * 文章评分
-     */
-    private Long score;
-
-    /**
-     * 文章浏览次数
-     */
-    private Long views;
-
-    /**
-     * 文章点赞数
-     */
-    private Long votes;
-
-    /**
-     * 文章发布时间
-     */
-
-    private LocalDateTime publishDate;
-
-    /**
-     * 文章编辑时间，表示最后一次编辑时间
-     */
-    private LocalDateTime editDate;
-
-    /**
-     * 发布状态，true表示已发布，false表示未发布
-     */
-    @TableField("is_published")
-    private Boolean isPublished;
-
+    public void updateVotes(Long delta){
+        if (delta==null){return;}
+        votes+=delta;
+    }
+    /*----------------------------------------------------------------------------*/
+    /*JavaBean规范*/
     public Long getId() {
         return id;
     }

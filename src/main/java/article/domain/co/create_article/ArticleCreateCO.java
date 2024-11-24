@@ -2,8 +2,8 @@ package article.domain.co.create_article;
 
 
 
-import article.domain.co.ArticleContent;
-import article.domain.co.ArticleMeta;
+import article.domain.dto.ArticleContent;
+import article.domain.dto.ArticleMeta;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 

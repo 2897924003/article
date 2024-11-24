@@ -1,4 +1,4 @@
-package article.domain.co;
+package article.domain.dto;
 
 /**
  * 文章内容：封装文章的正文部分

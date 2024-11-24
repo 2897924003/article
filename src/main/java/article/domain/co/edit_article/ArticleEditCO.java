@@ -1,7 +1,7 @@
 package article.domain.co.edit_article;
 
-import article.domain.co.ArticleContent;
-import article.domain.co.ArticleMeta;
+import article.domain.dto.ArticleContent;
+import article.domain.dto.ArticleMeta;
 import article.domain.co.CommandObject;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;

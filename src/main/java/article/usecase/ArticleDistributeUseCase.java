@@ -2,9 +2,13 @@ package article.usecase;
 
 import article.domain.Article;
 import article.domain.RankCommand;
+import article.domain.dto.ArticleContent;
+import article.domain.ro.ArticleShowAggregationRO;
 import article.infrastructure.ArticleRepository;
 
 import article.domain.policy.RankNameSpec;
+import article.statistic.ArticleInteractionEO;
+import article.statistic.ArticleStatisticsService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,10 +24,11 @@ import java.util.stream.Collectors;
 public class ArticleDistributeUseCase {
 
     private final ArticleRepository articleRepository;
-
+    private final ArticleStatisticsService articleStatisticsService;
     private final RedisTemplate<String,Long> redisRankTemplate;
-    public ArticleDistributeUseCase(ArticleRepository articleRepository, RedisTemplate<String, Long> redisRankTemplate) {
+    public ArticleDistributeUseCase(ArticleRepository articleRepository, ArticleStatisticsService articleStatisticsService, RedisTemplate<String, Long> redisRankTemplate) {
         this.articleRepository = articleRepository;
+        this.articleStatisticsService = articleStatisticsService;
         this.redisRankTemplate = redisRankTemplate;
     }
 
@@ -43,6 +48,28 @@ public class ArticleDistributeUseCase {
 
            //- 使用个性化推送引擎
 
+    }
+
+    /**
+     * 精确查找文章展示聚合信息-文章区+评论区
+     * @param articleId
+     * @return
+     */
+    public ArticleShowAggregationRO byId(long articleId) {
+        //TODO 首先查看一级缓存（LRU,每篇被访问的文章，初始都会设置一个TTL3,如果没被访问就-1，被访问就加1，如果为0，超过100）中是否有，再查看二级缓存中是否有
+
+        //调用仓储服务，获取文章展示信息，并聚合。
+        Article article = articleRepository.getById(articleId);
+        //判断是否是已发布文章，否则不予返回
+        if (!article.getIsPublished()){return null;}
+        ArticleContent articleContent = articleRepository.getArticleContent(articleId);
+
+        //调用文章统计服务-访问记录-有刷浏览量风险
+        articleStatisticsService.recordVisit(articleId);
+        articleStatisticsService.recordLike(articleId);
+        //articleStatisticsService.record(new ArticleInteractionEO(), ArticleStatisticsService.InteractionType.VIEW);
+
+        return new ArticleShowAggregationRO(article,articleContent);
     }
 
     public List<Article> byDateAndVote(Page<Article> page) {

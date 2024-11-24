@@ -1,4 +1,4 @@
-package article.domain.co;
+package article.domain.dto;
 
 import article.domain.Article;
 import java.time.LocalDateTime;

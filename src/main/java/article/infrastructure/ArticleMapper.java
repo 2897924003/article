@@ -1,7 +1,7 @@
 package article.infrastructure;
 
 import article.domain.Article;
-import article.domain.co.ArticleContent;
+import article.domain.dto.ArticleContent;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
@@ -42,4 +42,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     @Update("update article_content set content = #{content} where article_id=#{id}")
     void updateArticleContent(ArticleContent articleContent);
+
+    @Select("select article_content.content from article_content where article_id=#{id}")
+    ArticleContent getArticleContent(@Param("id") long id);
 }
